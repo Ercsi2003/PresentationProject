@@ -21,44 +21,62 @@ namespace TestEloadasProject
 
         [Test]
 
-        public void Engage_NotTheRightSpace()
+        public void Reservation_NoAvailableSeat()
         {
-            p.Engage();
-            p.Engage();
-            p.Engage();
-            p.Engage();
-            Assert.That(p.Engage(), Is.False);
+            p.Reservation();
+            p.Reservation();
+            p.Reservation();
+            p.Reservation();
+            Assert.That(p.Reservation(), Is.False);
         }
 
         [Test]
 
-        public void Engage_RightSpace()
+        public void Reservation_AvailableSeat()
         {
 
-            Assert.That(p.Engage(), Is.True);
+            Assert.That(p.Reservation(), Is.True);
         }
 
         [Test]
 
-        public void getFreeSpaces_()
+        public void getNumOfFreeSeats_ReturnsCorrectCount()
         {
-            //konstruktor, ha nincs, osszes, ha van csak annyit amennyi van, túl sokszor hłvódik meg
+            Assert.That(4, Is.EqualTo(p.getNumOfFreeSeats()));
+            p.Reservation();
+            Assert.That(3, Is.EqualTo(p.getNumOfFreeSeats()));
         }
 
         [Test]
 
-        public void getFull_FreeSpacesNull()
+        public void getFull_FreeSeatsZero_returnsTrue()
         {
-            //az utolso szabad helyig lehet foglalni csak
-            Assert.That(p.getFull(0), Is.True);
+            p.Reservation();
+            Assert.True(p.getFull());
         }
 
         [Test]
 
-        public void AlreadyTaken_indexTaken()
+        public void getFull_FreeSeatsAvailable_returnsFalse()
         {
-            //indexeltolas
-            Assert.That(p.AlreadyTaken(2, 2), Is.True);
+            p.Reservation();
+            Assert.False(p.getFull());
+        }
+
+        [Test]
+
+        public void AlreadyReservedSeat_indexTaken_returnsTrue()
+        {
+            p.Reservation();
+            Assert.True(p.AlreadyReservedSeat(1,1));
+        }
+
+        [Test]
+
+        public void AlreadyReservedSeat_InvalidInputs()
+        {
+            Assert.Throws<ArgumentException>(() => p.AlreadyReservedSeat(0, 1));
+            Assert.Throws<ArgumentException>(() => p.AlreadyReservedSeat(12, 6));
         }
     }
 }

@@ -4,17 +4,17 @@
     {
         public bool[,] reservations;
 
-        public Presentation(int NumOfLines, int NumOfAvailableSpaces)
+        public Presentation(int NumOfLines, int NumOfAvailableSeats)
         {
-            this.reservations = new bool[NumOfLines, NumOfAvailableSpaces];
+            this.reservations = new bool[NumOfLines, NumOfAvailableSeats];
 
-            if (NumOfLines < 0 ||  NumOfAvailableSpaces < 0 )
+            if (NumOfLines < 0 ||  NumOfAvailableSeats < 0 )
             {
-                throw new ArgumentException(nameof(NumOfLines), nameof(NumOfAvailableSpaces));
+                throw new ArgumentException(nameof(NumOfLines), nameof(NumOfAvailableSeats));
             }
         }
 
-        public bool Engage()
+        public bool Reservation()
         {
             for (int i = 0; i < reservations.GetLength(0); i++)
             {
@@ -32,63 +32,47 @@
             
         }
 
-        public int getFreeSpaces()
+        public int getNumOfFreeSeats()
         {
-            int freeSpaces = 0;
+            int freeSeats = 0;
             for (int i = 0; i < reservations.GetLength(0); i++)
             {
                 for (int j = 0; j < reservations.GetLength(1); j++)
                 {
                     if (reservations[i, j] == false)
                     {
-                        freeSpaces ++;
+                        freeSeats ++;
                         
                     }
 
                 }
             }
-            return freeSpaces;
+            return freeSeats;
             
         }
 
-        public bool getFull(int freeSpaces)
+        public bool getFull()
         {
             for (int i = 0; i < reservations.GetLength(0); i++)
             {
                 for (int j = 0; j < reservations.GetLength(1); j++)
                 {
-                    if (freeSpaces == 0)
+                    if (!reservations[i, j])
                     {
-                        return true;
+                        return false;
                     }
 
                 }
             }
-            return false;
+            return true;
         }
 
-        public bool AlreadyTaken(int NumOfLines, int NumOfAvailableSpaces)
+        public bool AlreadyReservedSeat(int NumOfLines, int NumOfAvailableSeats)
         {
-            if (NumOfLines < 1 || NumOfAvailableSpaces < 1 )
-            {
-                throw new ArgumentException(nameof(NumOfLines), nameof(NumOfAvailableSpaces));
-            }
+            if (NumOfLines < 1 || NumOfAvailableSeats < 1 || NumOfLines > reservations.GetLength(0) || NumOfLines > reservations.GetLength(1))
+                throw new ArgumentException("Invalid line or seat!");
 
-            for (int i = 0; i < reservations.GetLength(0); i++)
-            {
-                for (int j = 0; j < reservations.GetLength(1); j++)
-                {
-                    if (reservations[i,j] == false)
-                    {
-                        return true;
-                    }
-
-                }
-            }
-            return false;
-
-
-
+            return reservations[NumOfLines - 1, NumOfAvailableSeats - 1];
         }
 
         
